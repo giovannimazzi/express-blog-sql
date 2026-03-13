@@ -3,7 +3,15 @@ const { apiUrl } = require("../config");
 
 const normalizeImagePath = (post) => (post.image = apiUrl + post.image);
 
-function index(req, res) {}
+function index(req, res) {
+  // preparazione query
+  const sql = "SELECT * FROM posts";
+  // esecuzione query
+  connection.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: "Database query failed" });
+    res.json(results);
+  });
+}
 
 function show(req, res) {}
 
