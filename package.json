@@ -1,15 +1,15 @@
 {
-  "name": "express-blog-intro",
+  "name": "express-blog-sql",
   "version": "1.0.0",
-  "description": "**express-blog-intro**",
+  "description": "**express-blog-sql**",
   "license": "ISC",
   "author": "",
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "watch": "node --watch app.js"
+    "start": "node --env-file=.env app.js",
+    "watch": "node --watch --env-file=.env app.js"
   },
   "dependencies": {
     "express": "^5.2.1",
