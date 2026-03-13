@@ -13,12 +13,31 @@ function index(req, res) {
 function show(req, res) {
   // recupero id da URL
   const id = req.params.id;
-  const sql = "SELECT * FROM posts WHERE id = ?";
-  connection.query(sql, [id], (err, results) => {
-    if (err) return res.status(500).json({ error: "Database query failed" });
-    if (results.length === 0)
+  // preparazione query per il post
+  const postSql = "SELECT * FROM posts WHERE id = ?";
+  // preparazione query per recupero tags
+  const tagsSql = `
+SELECT T.*
+FROM tags T
+JOIN post_tag PT ON T.id = PT.tag_id
+WHERE PT.post_id = ?
+`;
+  // Esecuzione prima query per il post
+  connection.query(postSql, [id], (err, postResults) => {
+    if (err)
+      return res.status(500).json({ error: "Database post query failed" });
+    if (postResults.length === 0)
       return res.status(404).json({ error: "Post not found" });
-    res.json(results[0]);
+    // Recupero post
+    const post = postResults[0];
+    // Esecuzione seconda query per i tags
+    connection.query(tagsSql, [id], (err, tagsResults) => {
+      if (err)
+        return res.status(500).json({ error: "Database tags query failed" });
+      // Aggiunta tags al post
+      post.tags = tagsResults;
+      res.json(post);
+    });
   });
 }
 
