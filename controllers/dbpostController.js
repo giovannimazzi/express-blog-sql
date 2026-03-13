@@ -1,7 +1,4 @@
 const connection = require("../data/db");
-const { apiUrl } = require("../config");
-
-const normalizeImagePath = (post) => (post.image = apiUrl + post.image);
 
 function index(req, res) {
   // preparazione query
