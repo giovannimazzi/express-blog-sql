@@ -18,6 +18,14 @@ function update(req, res) {}
 
 function modify(req, res) {}
 
-function destroy(req, res) {}
+function destroy(req, res) {
+  // recupero id da URL
+  const { id } = req.params;
+  //Eliminazione dell'item
+  connection.query("DELETE FROM posts WHERE id = ?", [id], (err) => {
+    if (err) return res.status(500).json({ error: "Failed to delete pizza" });
+    res.sendStatus(204);
+  });
+}
 
 module.exports = { index, show, store, update, modify, destroy };
